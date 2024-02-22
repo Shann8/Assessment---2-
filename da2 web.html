@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resume Generator</title>
+    <style>
+
+        body {
+            font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+            background: linear-gradient(to top right, #33ccff 0%, #ab62d6 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        
+        #main_border {
+            border: 0.24rem solid black;
+            padding: 20px;
+            width: 600px;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
+        }
+
+        form {
+            max-width: 500px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        input[type="text"],
+        input[type="date"],
+        textarea {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+
+        input[type="submit"] {
+            background-color: #4CAF50;
+            color: white;
+            padding: 14px 20px;
+            margin: 8px 0;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            width: 100%;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #45a049;
+        }
+
+        #resumeOutput {
+            margin-top: 30px;
+            margin-left: 20px;
+            padding: 20px;
+            border: 2px solid black;
+            background-color: #fbf5ea;
+            border-radius: 10px;
+            text-align: center;
+            display: none;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
+        }
+
+        #resumeOutput h2 {
+            color: #4CAF50;
+        }
+
+        #resumeOutput p {
+            margin: 10px 0;
+        }
+
+        #resumeOutput p strong {
+            font-weight: bold;
+        }
+
+        #resumeOutput p span {
+            font-weight: normal;
+        }
+    </style>
+</head>
+    
+
+<body>
+    <div id="main_border">
+        <form id="resumeForm">
+            <label for="name">Name:</label>
+            <input type="text" id="name" name="name" required>
+
+            <label for="dob">Date of Birth:</label>
+            <input type="date" id="dob" name="dob" required>
+
+            <label for="phone">Phone Number:</label>
+            <input type="text" id="phone" name="phone" required>
+
+            <label for="biodata">Short Bio:</label>
+            <textarea id="biodata" name="biodata" required></textarea>
+
+            <input type="submit" value="Generate Resume" id="submitbutton">
+        </form>
+    </div>
+
+    <div id="resumeOutput">
+        <h2>Resume</h2>
+        <p><strong>Name:</strong> <span id="outputName"></span></p>
+        <p><strong>Date of Birth:</strong> <span id="outputDOB"></span></p>
+        <p><strong>Age:</strong> <span id="outputAge"></span></p>
+        <p><strong>Phone Number:</strong> <span id="outputPhone"></span></p>
+        <p><strong>Bio:</strong></p>
+        <p id="outputBio"></p>
+    </div>
+
+    <script>
+        document.getElementById("submitbutton").addEventListener("click", function() {
+            var mainborder = document.getElementById("main_border");
+            mainborder.style.marginTop = "2%";
+        });
+
+        document.getElementById("resumeForm").addEventListener("submit", function(event) {
+            event.preventDefault();
+            var name = document.getElementById("name").value;
+            var dob = new Date(document.getElementById("dob").value);
+            var phone = document.getElementById("phone").value;
+            var bio = document.getElementById("biodata").value;
+
+            var now = new Date();
+            var age = calculateAge(dob, now);
+
+            document.getElementById("outputName").innerText = name;
+            document.getElementById("outputDOB").innerText = dob.toDateString();
+            document.getElementById("outputAge").innerText = age;
+            document.getElementById("outputPhone").innerText = phone;
+            document.getElementById("outputBio").innerText = bio;
+
+            document.getElementById("resumeOutput").style.display = "block";
+        });
+
+        function calculateAge(dateOfBirth, currentDate) {
+            var age = currentDate.getFullYear() - dateOfBirth.getFullYear();
+            var monthDiff = currentDate.getMonth() - dateOfBirth.getMonth();
+            if (monthDiff < 0 || (monthDiff === 0 && currentDate.getDate() < dateOfBirth.getDate())) {
+                age--;
+            }
+            var months = currentDate.getMonth() - dateOfBirth.getMonth();
+            if (months < 0) {
+                months = 12 + months;
+            }
+            var days = currentDate.getDate() - dateOfBirth.getDate();
+            if (days < 0) {
+                var tempDate = new Date(currentDate.getFullYear(), currentDate.getMonth() - 1, dateOfBirth.getDate());
+                days = Math.floor((currentDate - tempDate) / (1000 * 60 * 60 * 24));
+            }
+            return age + " years, " + months + " months, " + days + " days";
+        }
+    </script>
+
+</body>
+
+</html>
+
+    
+
